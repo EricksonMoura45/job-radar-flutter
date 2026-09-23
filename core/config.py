@@ -164,6 +164,39 @@ TERMOS_FERRAMENTA = [
     "bigquery",
 ]
 
+# Perfil Flutter: o filtro exige que o título também declare Pleno ou Sênior.
+KEYWORDS_FLUTTER = [
+    "Flutter Developer",
+    "Desenvolvedor Flutter",
+    "Flutter Engineer",
+    "Engenheiro Flutter",
+    "Flutter Mobile Developer",
+    "Mobile Flutter Engineer",
+    "Mobile Flutter Developer",
+]
+TERMOS_BUSCA_FLUTTER = [
+    "flutter",
+    '"Flutter" AND ("Remote" OR "Remoto") AND ("Mobile" OR "Developer" OR "Engineer")',
+    "flutter developer",
+    "desenvolvedor flutter",
+    "flutter engineer",
+    "mobile developer flutter",
+    "mobile engineer flutter",
+]
+TERMOS_PRIORITARIOS_FLUTTER = TERMOS_BUSCA_FLUTTER
+
+LOCATIONS_FLUTTER_GLOBAL = [
+    "United States",
+    "United Kingdom",
+    "Germany",
+    "France",
+    "Netherlands",
+    "Ireland",
+    "Spain",
+    "Portugal",
+    "Poland",
+]
+
 TERMOS_BUSCA = TERMOS_CARGO + TERMOS_FERRAMENTA
 
 # Termos que rodam em TODO ciclo, fora do rodízio.

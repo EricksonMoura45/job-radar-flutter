@@ -17,7 +17,7 @@ Regra, resumida:
 import pytest
 
 from core.job import Job
-from core.perfis import PERFIL_BR, PERFIL_INTL
+from core.perfis import PERFIL_BR, PERFIL_FLUTTER, PERFIL_INTL
 
 
 def _vaga(titulo, local, modalidade):
@@ -169,6 +169,28 @@ def test_intl_remoto_sem_mercado_declarado_exige_idioma_no_titulo():
 ])
 def test_cargo_no_titulo(titulo, esperado):
     assert _vaga(titulo, "Recife - PE", "Presencial").combina_com(PERFIL_BR.regras) is esperado
+
+
+@pytest.mark.parametrize("titulo", [
+    "Flutter Developer Pleno",
+    "Desenvolvedor Flutter Sênior",
+    "Flutter Engineer Sr",
+    "Senior Mobile Flutter Engineer",
+])
+def test_flutter_pleno_ou_senior_remoto_e_aceito(titulo):
+    assert _vaga(titulo, "Remote - Brazil", "Remoto").combina_com(PERFIL_FLUTTER.regras)
+
+
+@pytest.mark.parametrize("titulo", [
+    "Flutter Developer Júnior",
+    "Flutter Developer",
+])
+def test_flutter_remoto_e_aceito_sem_restricao_de_senioridade(titulo):
+    assert _vaga(titulo, "Remote - Brazil", "Remoto").combina_com(PERFIL_FLUTTER.regras)
+
+
+def test_flutter_presencial_e_rejeitado_mesmo_em_cidade_aceita():
+    assert not _vaga("Flutter Developer Pleno", "Recife - PE", "Presencial").combina_com(PERFIL_FLUTTER.regras)
 
 
 # ------------------------- CIDADE DE NOME PARECIDO, ESTADO DIFERENTE

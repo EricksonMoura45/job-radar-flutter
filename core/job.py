@@ -1001,6 +1001,8 @@ class RegrasFiltro:
     # mercado hispanofalante-lusófono explicitamente. None = não checa
     # (BR não precisa — fonte já é 100% brasileira/portuguesa).
     idiomas_exigidos: list[str] | None = None
+    senioridades_aceitas: list[str] | None = None
+    aceitar_qualquer_localizacao: bool = False
 
 
 @dataclass
@@ -1371,15 +1373,20 @@ class Job:
         # _cidade_confere: nome batido nao basta quando o texto declara uma
         # UF que contradiz a cidade (ver _UF_DA_CIDADE — "Campina Grande do
         # Sul - PR" nao e Campina Grande/PB).
-        bate_cidade = bate_remoto or any(
+        bate_cidade = regras.aceitar_qualquer_localizacao or bate_remoto or any(
             _contem_termo(_normalizar(c), local_norm)
             and _cidade_confere(_normalizar(c), local_norm)
             for c in regras.cidades
             if _normalizar(c) not in _FLAGS_REMOTO
         )
 
+        senioridade_aceita = (
+            regras.senioridades_aceitas is None
+            or _detectar_senioridade(self.titulo) in regras.senioridades_aceitas
+        )
+
         return _Avaliacao(
-            aprovada=bate_keyword and bate_cidade,
+            aprovada=bate_keyword and bate_cidade and senioridade_aceita,
             bate_forte=bate_forte,
             bate_ambiguo=bate_ambiguo,
             bate_ferramenta=bate_ferramenta,

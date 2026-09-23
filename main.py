@@ -498,8 +498,8 @@ def main():
         nargs="+",
         choices=sorted(PERFIS.keys()),
         help=(
-            "Qual(is) mercado(s) rodar nesta execução — 'brasil', 'internacional', "
-            "ou os dois (--perfil brasil internacional)."
+            "Qual(is) perfil(is) rodar — 'brasil', 'flutter', 'internacional', "
+            "ou vários (--perfil brasil flutter)."
         ),
     )
     parser.add_argument(

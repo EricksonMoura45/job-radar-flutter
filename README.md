@@ -157,6 +157,44 @@ Criar `.env` na raiz com `TELEGRAM_BOT_TOKEN` e `TELEGRAM_CHAT_ID` (via [@BotFat
 ```bash
 python main.py --perfil brasil internacional --once   # um ciclo e encerra
 python main.py --perfil brasil                        # contínuo, a cada 3h
+python main.py --perfil flutter --once                 # Flutter remoto pleno/sênior
+python main.py --perfil flutter-global --once          # Flutter remoto na Europa/EUA
+```
+
+O perfil `flutter` busca títulos de Flutter com nível **Pleno** ou **Sênior** e
+aceita somente vagas remotas. Ele pode rodar junto com o perfil Brasil:
+
+```bash
+python main.py --perfil brasil flutter
+```
+
+O perfil `flutter-global` ignora senioridade e modalidade: busca qualquer título
+com `Flutter`, remoto, híbrido ou presencial, na Europa, nos Estados Unidos ou
+em outros mercados publicados pelas fontes. Ele consulta LinkedIn internacional,
+Just Join IT, No Fluff Jobs, We Work Remotely, Remotar, Remote OK, Wellfound,
+Arc.dev, ProgramaThor, Revelo, RemoteYeah e FlutterJobs.
+Algumas fontes podem bloquear automação por região ou IP; nesses casos o
+scraper registra a indisponibilidade e mantém as demais fontes funcionando.
+
+### Telegram
+
+1. No Telegram, abra `@BotFather`, envie `/newbot` e siga as instruções.
+2. Copie o token gerado pelo BotFather e mantenha-o em segredo.
+3. Abra o bot criado e envie uma mensagem para ele.
+4. No navegador, acesse `https://api.telegram.org/botSEU_TOKEN/getUpdates` e
+    substitua `SEU_TOKEN` pelo token real.
+5. No JSON retornado, copie o valor de `message.chat.id`.
+6. Crie um arquivo `.env` na raiz do projeto:
+
+```env
+TELEGRAM_BOT_TOKEN=cole_seu_token_aqui
+TELEGRAM_CHAT_ID=cole_seu_chat_id_aqui
+```
+
+Não publique o `.env` nem compartilhe o token. Depois, execute um ciclo:
+
+```bash
+python main.py --perfil flutter --once
 ```
 
 Para testar sem tocar no banco de produção:

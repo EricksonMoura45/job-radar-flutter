@@ -29,6 +29,10 @@ from core.config import (
     CIDADES_EUROPA_IBERICA,
     ATIVAR_EIXO_IBERICO_BR,
     MERCADOS_REMOTO_ACEITOS,
+    KEYWORDS_FLUTTER,
+    TERMOS_BUSCA_FLUTTER,
+    TERMOS_PRIORITARIOS_FLUTTER,
+    LOCATIONS_FLUTTER_GLOBAL,
     TERMOS_BUSCA,
     TERMOS_PRIORITARIOS,
     TERMOS_POR_CICLO,
@@ -55,6 +59,9 @@ from scrapers.indeed_intl import IndeedIntlScraper
 from scrapers.jobs99 import Jobs99Scraper
 from scrapers.linkedin import LinkedInScraper
 from scrapers.linkedin_intl import LinkedInIntlScraper
+from scrapers.justjoin_intl import JustJoinIntlScraper
+from scrapers.nofluffjobs_intl import NoFluffJobsIntlScraper
+from scrapers.flutter_boards_intl import FlutterBoardsIntlScraper
 from scrapers.senior import SeniorScraper
 from scrapers.solides import SolidesScraper
 from scrapers.weworkremotely_intl import WeWorkRemotelyIntlScraper
@@ -270,6 +277,72 @@ PERFIL_BR = Perfil(
     max_scrapers_concorrentes=4,
 )
 
+_REGRAS_FLUTTER = RegrasFiltro(
+    keywords_forte=KEYWORDS_FLUTTER,
+    keywords_ambiguo=[],
+    qualificadores_dados=[],
+    ferramentas_titulo=[],
+    qualificadores_cargo=[],
+    cidades=["Remoto"],
+    mercados_remoto_aceitos=MERCADOS_REMOTO_ACEITOS,
+    senioridades_aceitas=None,
+)
+
+PERFIL_FLUTTER = Perfil(
+    chave="flutter",
+    nome="Flutter remoto",
+    palavras_monitoradas=KEYWORDS_FLUTTER,
+    paises_pesquisados=None,
+    regras=_REGRAS_FLUTTER,
+    regras_eixo_secundario=None,
+    eixo_secundario_ativo=False,
+    eixo_secundario_rotulo="",
+    termos_busca=TERMOS_BUSCA_FLUTTER,
+    termos_por_ciclo=len(TERMOS_BUSCA_FLUTTER),
+    termos_prioritarios=TERMOS_PRIORITARIOS_FLUTTER,
+    definicao_scrapers=_SCRAPERS_BR,
+    max_scrapers_concorrentes=4,
+)
+
+_REGRAS_FLUTTER_GLOBAL = RegrasFiltro(
+    keywords_forte=KEYWORDS_FLUTTER,
+    keywords_ambiguo=[],
+    qualificadores_dados=[],
+    ferramentas_titulo=[],
+    qualificadores_cargo=[],
+    cidades=[],
+    mercados_remoto_aceitos=None,
+    aceitar_qualquer_localizacao=True,
+)
+
+_SCRAPERS_FLUTTER_GLOBAL = [
+    DefinicaoScraper(
+        LinkedInIntlScraper,
+        FREQUENCIA_ALTA,
+        {"locations": LOCATIONS_FLUTTER_GLOBAL},
+    ),
+    DefinicaoScraper(JustJoinIntlScraper, FREQUENCIA_BAIXA),
+    DefinicaoScraper(NoFluffJobsIntlScraper, FREQUENCIA_BAIXA),
+    DefinicaoScraper(FlutterBoardsIntlScraper, FREQUENCIA_BAIXA),
+    DefinicaoScraper(WeWorkRemotelyIntlScraper, FREQUENCIA_ALTA),
+]
+
+PERFIL_FLUTTER_GLOBAL = Perfil(
+    chave="flutter-global",
+    nome="Flutter Europa/EUA",
+    palavras_monitoradas=KEYWORDS_FLUTTER,
+    paises_pesquisados=LOCATIONS_FLUTTER_GLOBAL,
+    regras=_REGRAS_FLUTTER_GLOBAL,
+    regras_eixo_secundario=None,
+    eixo_secundario_ativo=False,
+    eixo_secundario_rotulo="",
+    termos_busca=TERMOS_BUSCA_FLUTTER,
+    termos_por_ciclo=len(TERMOS_BUSCA_FLUTTER),
+    termos_prioritarios=TERMOS_PRIORITARIOS_FLUTTER,
+    definicao_scrapers=_SCRAPERS_FLUTTER_GLOBAL,
+    max_scrapers_concorrentes=3,
+)
+
 
 # Regra primária: só remoto ("Remote"/"Remoto" em CIDADES_INTL), mercado
 # LATAM/Portugal/Espanha aceito.
@@ -337,5 +410,7 @@ PERFIL_INTL = Perfil(
 
 PERFIS = {
     PERFIL_BR.chave: PERFIL_BR,
+    PERFIL_FLUTTER.chave: PERFIL_FLUTTER,
+    PERFIL_FLUTTER_GLOBAL.chave: PERFIL_FLUTTER_GLOBAL,
     PERFIL_INTL.chave: PERFIL_INTL,
 }
